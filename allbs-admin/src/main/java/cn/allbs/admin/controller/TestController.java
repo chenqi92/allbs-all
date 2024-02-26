@@ -1,5 +1,6 @@
 package cn.allbs.admin.controller;
 
+import cn.allbs.admin.config.R;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,11 @@ public class TestController {
     @GetMapping("test1")
     public String test1() {
         return "Hello World";
+    }
+
+    @GetMapping("test2")
+    public R<String> test2() {
+        return R.failed("Hello World!");
     }
 
 }
