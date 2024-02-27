@@ -1,3 +1,11 @@
+spring:
+  data:
+    redis:
+      database: 1
+      host: ${IMSP_REDIS_HOST_DEV:127.0.0.1}
+      port: 6379
+      password: ${IMSP_REDIS_PWD_DEV:123456}
+      timeout: 5000
 swagger:
   title: spring boot3新工程模板
   description: 使用spring boot3 + jdk17重新搭建的工程模板
