@@ -15,6 +15,9 @@
     <description>allbs-admin</description>
     <properties>
         <java.version>17</java.version>
+        <openApi.verison>2.0.2</openApi.verison>
+        <spring-doc.verison>2.3.0</spring-doc.verison>
+        <knife4j.version>3.0.3</knife4j.version>
     </properties>
     <dependencies>
         <dependency>
@@ -35,6 +38,26 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${spring-doc.verison}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-springdoc-ui</artifactId>
+            <version>${knife4j.version}</version>
         </dependency>
     </dependencies>
 

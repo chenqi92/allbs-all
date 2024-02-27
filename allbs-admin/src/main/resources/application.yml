@@ -1,6 +1,7 @@
 server:
   port: 8888
-
 spring:
   application:
     name: allbs-admin
+  profiles:
+    active: dev

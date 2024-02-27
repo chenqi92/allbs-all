@@ -1,0 +1,19 @@
+swagger:
+  title: spring boot3新工程模板
+  description: 使用spring boot3 + jdk17重新搭建的工程模板
+  version: 1.0
+  securitySchemes:
+    token:
+      type: APIKEY  # 类型
+      in: HEADER    # 放header里面
+      name: token # header-key
+  servers:
+    - url: http://127.0.0.1:8888 # 自定义服务器 URL，如部署在docker中时可以配置
+      description: 本地服务器
+springdoc:
+  api-docs:
+    enabled: true
+  # 配置需要生成接口文档的扫描包
+  packages-to-scan: cn.allbs.admin.controller
+  # 配置需要生成接口文档的接口路径，如果增加了该节点，那么只将/user开头的接口文档生成出来
+  # paths-to-match: /user/**
