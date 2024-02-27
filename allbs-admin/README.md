@@ -1,10 +1,17 @@
-# Getting Started
+### api文档访问
+#### 路径 
+http://localhost:8888/doc.html 或者 http://localhost:8888/swagger-ui/index.html
 
-### Reference Documentation
+#### 注解对应关系
 
-For further reference, please consider the following sections:
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.2.3/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.2.3/maven-plugin/reference/html/#build-image)
-
+| SpringFox | SpringDoc                                                    |
+| -- |--------------------------------------------------------------|
+| @Api | @Tag                                                         |
+| @ApiIgnore | @Parameter(hidden = true)或@Operation(hidden = true)或@Hidden |
+| @ApiImplicitParams | @Parameters                                                  |
+| @ApiImplicitParam | @Parameter                                                   |
+| @ApiModel | @Schema                                                      |
+| @ApiModelProperty | @Schema                                                      |
+| @ApiOperation(value = "foo", notes = "bar") | @Operation(summary = "foo", description = "bar")             |
+| @ApiParam | @Parameter                                                   |
+| @ApiResponse(code = 404, message = "foo") | ApiResponse(responseCode = "404", description = "foo")       |
