@@ -1,11 +1,35 @@
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST_DEV:allbs-mysql}:3306/allbs
+    username: root
+    password: ${PASS_COMMON_2:123456}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 5
+      idle-timeout: 30000
   data:
     redis:
       database: 1
-      host: ${IMSP_REDIS_HOST_DEV:127.0.0.1}
+      host: ${REDIS_HOST_DEV:127.0.0.1}
       port: 6379
-      password: ${IMSP_REDIS_PWD_DEV:123456}
+      password: ${REDIS_PWD_DEV:123456}
       timeout: 5000
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*/*.xml
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-handlers-package: cn.allbs.admin.config.handler
+  show-sql: true
+
 swagger:
   title: spring boot3新工程模板
   description: 使用spring boot3 + jdk17重新搭建的工程模板
