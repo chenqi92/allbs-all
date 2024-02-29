@@ -27,4 +27,9 @@ public interface CommonConstants {
      * 失败标识语
      */
     String FAILED_MSG = "ERROR";
+
+    /**
+     * 时区设置
+     */
+    String ASIA_SHANGHAI = "Asia/Shanghai";
 }
