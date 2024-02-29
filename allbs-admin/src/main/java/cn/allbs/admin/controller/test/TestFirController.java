@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/test/fir")
-@Tag(name = "testFir", description = "测试表")
+@Tag(name = "testFir测试表", description = "测试表")
 public class TestFirController {
 
     /**
