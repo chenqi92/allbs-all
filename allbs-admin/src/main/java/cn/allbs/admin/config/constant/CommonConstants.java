@@ -32,4 +32,24 @@ public interface CommonConstants {
      * 时区设置
      */
     String ASIA_SHANGHAI = "Asia/Shanghai";
+
+    /**
+     * spring
+     */
+    String SPRING = "spring.";
+
+    /**
+     * spring.application
+     */
+    String SPRING_APPLICATION = SPRING + "application.";
+
+    /**
+     * spring.application.name
+     */
+    String SPRING_APPLICATION_NAME = SPRING_APPLICATION + "name";
+
+    /**
+     * 本机ip
+     */
+    String LOCAL_IP = "local.server.ip";
 }
