@@ -29,7 +29,6 @@ mybatis-plus:
     configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   type-handlers-package: cn.allbs.admin.config.handler
-  show-sql: true
 
 swagger:
   title: spring boot3新工程模板

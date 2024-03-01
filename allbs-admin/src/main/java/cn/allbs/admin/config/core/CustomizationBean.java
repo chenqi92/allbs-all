@@ -1,4 +1,4 @@
-package cn.allbs.admin.config;
+package cn.allbs.admin.config.core;
 
 import io.undertow.server.DefaultByteBufferPool;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;

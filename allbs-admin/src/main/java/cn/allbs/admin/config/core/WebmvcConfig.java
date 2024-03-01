@@ -1,4 +1,4 @@
-package cn.allbs.admin.config;
+package cn.allbs.admin.config.core;
 
 import cn.allbs.admin.config.constant.CommonConstants;
 import cn.allbs.admin.config.constant.DatePattern;

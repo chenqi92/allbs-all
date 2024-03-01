@@ -22,6 +22,7 @@
         <mybatis-flex.version>1.8.0</mybatis-flex.version>
         <mybatis-spring.version>3.0.3</mybatis-spring.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
+        <jsoup.version>1.17.2</jsoup.version>
     </properties>
     <dependencies>
         <dependency>
@@ -114,6 +115,17 @@
             <artifactId>HikariCP</artifactId>
         </dependency>
         <!-- 数据库连接 结束-->
+        <!-- xss相关开始 -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+        <!-- xss相关结束 -->
     </dependencies>
 
     <build>

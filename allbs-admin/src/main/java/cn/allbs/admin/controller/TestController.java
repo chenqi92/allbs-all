@@ -1,6 +1,6 @@
 package cn.allbs.admin.controller;
 
-import cn.allbs.admin.config.R;
+import cn.allbs.admin.config.core.R;
 import cn.allbs.admin.config.enums.SexEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

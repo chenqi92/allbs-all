@@ -47,9 +47,4 @@ public interface CommonConstants {
      * spring.application.name
      */
     String SPRING_APPLICATION_NAME = SPRING_APPLICATION + "name";
-
-    /**
-     * 本机ip
-     */
-    String LOCAL_IP = "local.server.ip";
 }

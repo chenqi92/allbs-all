@@ -1,6 +1,6 @@
 package cn.allbs.admin.controller.test;
 
-import cn.allbs.admin.config.R;
+import cn.allbs.admin.config.core.R;
 import cn.allbs.admin.dto.test.TestFirDTO;
 import cn.allbs.admin.entity.test.TestFirEntity;
 import cn.allbs.admin.service.test.TestFirService;

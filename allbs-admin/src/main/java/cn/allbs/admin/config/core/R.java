@@ -1,4 +1,4 @@
-package cn.allbs.admin.config;
+package cn.allbs.admin.config.core;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

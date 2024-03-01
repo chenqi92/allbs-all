@@ -1,4 +1,4 @@
-package cn.allbs.admin.config;
+package cn.allbs.admin.config.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.context.WebServerApplicationContext;
