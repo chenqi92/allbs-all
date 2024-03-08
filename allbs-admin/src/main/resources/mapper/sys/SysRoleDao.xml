@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.allbs.admin.dao.sys.SysRoleDao">
+    <resultMap type="cn.allbs.admin.entity.sys.SysRoleEntity" id="SysRoleMap">
+        <result property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleCode" column="role_code"/>
+        <result property="roleDesc" column="role_desc"/>
+        <result property="dsType" column="ds_type"/>
+        <result property="dsScope" column="ds_scope"/>
+        <result property="delFlg" column="del_flg"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        `role_id`,
+        `role_name`,
+        `role_code`,
+        `role_desc`,
+        `ds_type`,
+        `ds_scope`,
+        `del_flg`,
+        `create_time`,
+        `update_time`,
+        `create_user`,
+        `update_user`
+    </sql>
+
+    <select id="queryList" resultType="cn.allbs.admin.vo.sys.SysRoleVO">
+        select
+        `role_id`,
+        `role_name`,
+        `role_code`,
+        `role_desc`,
+        `ds_type`,
+        `ds_scope`,
+        `del_flg`,
+        `create_time`,
+        `update_time`,
+        `create_user`,
+        `update_user`
+        from sys_role
+        <where>
+            AND del_flg = 0
+            <if test="sysRoleDTO.roleId != null">
+                AND `role_id` = #{sysRoleDTO.roleId}
+            </if>
+            AND del_flg = 0
+            <if test="sysRoleDTO.roleName != null and sysRoleDTO.roleName != ''">
+                AND `role_name` like concat('%', #{sysRoleDTO.roleName} ,'%')
+            </if>
+            AND del_flg = 0
+            <if test="sysRoleDTO.roleCode != null and sysRoleDTO.roleCode != ''">
+                AND `role_code` like concat('%', #{sysRoleDTO.roleCode} ,'%')
+            </if>
+            AND del_flg = 0
+            <if test="sysRoleDTO.roleDesc != null and sysRoleDTO.roleDesc != ''">
+                AND `role_desc` like concat('%', #{sysRoleDTO.roleDesc} ,'%')
+            </if>
+            AND del_flg = 0
+            <if test="sysRoleDTO.dsType != null and sysRoleDTO.dsType != ''">
+                AND `ds_type` like concat('%', #{sysRoleDTO.dsType} ,'%')
+            </if>
+            AND del_flg = 0
+            <if test="sysRoleDTO.dsScope != null and sysRoleDTO.dsScope != ''">
+                AND `ds_scope` like concat('%', #{sysRoleDTO.dsScope} ,'%')
+            </if>
+            AND del_flg = 0
+            AND del_flg = 0
+            <if test="sysRoleDTO.createTime != null">
+                AND `create_time` = #{sysRoleDTO.createTime}
+            </if>
+            AND del_flg = 0
+            <if test="sysRoleDTO.updateTime != null">
+                AND `update_time` = #{sysRoleDTO.updateTime}
+            </if>
+            AND del_flg = 0
+            <if test="sysRoleDTO.createUser != null and sysRoleDTO.createUser != ''">
+                AND `create_user` like concat('%', #{sysRoleDTO.createUser} ,'%')
+            </if>
+            AND del_flg = 0
+            <if test="sysRoleDTO.updateUser != null and sysRoleDTO.updateUser != ''">
+                AND `update_user` like concat('%', #{sysRoleDTO.updateUser} ,'%')
+            </if>
+        </where>
+    </select>
+</mapper>

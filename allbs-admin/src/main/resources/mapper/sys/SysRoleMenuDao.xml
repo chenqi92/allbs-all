@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.allbs.admin.dao.sys.SysRoleMenuDao">
+    <resultMap type="cn.allbs.admin.entity.sys.SysRoleMenuEntity" id="SysRoleMenuMap">
+        <result property="roleId" column="role_id"/>
+        <result property="menuId" column="menu_id"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        `role_id`,
+        `menu_id`
+    </sql>
+
+    <select id="queryList" resultType="cn.allbs.admin.vo.sys.SysRoleMenuVO">
+        select
+        `role_id`,
+        `menu_id`
+        from sys_role_menu
+        <where>
+            <if test="sysRoleMenuDTO.roleId != null">
+                AND `role_id` = #{sysRoleMenuDTO.roleId}
+            </if>
+            <if test="sysRoleMenuDTO.menuId != null">
+                AND `menu_id` = #{sysRoleMenuDTO.menuId}
+            </if>
+        </where>
+    </select>
+</mapper>

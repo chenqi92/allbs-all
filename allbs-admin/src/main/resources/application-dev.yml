@@ -30,6 +30,19 @@ mybatis-plus:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   type-handlers-package: cn.allbs.admin.config.handler
 
+security:
+  expire-time: 43200 #过期时间秒
+  refresh-time: 43200 #刷新时间秒
+  sign-key: allbs # 签名
+  ignore-urls:
+    - /v3/api-docs/**
+    - /doc.html
+    - /webjars/**
+    - /druid/**
+    - /static/**
+    - /configuration/ui
+    - /swagger-resources/**
+
 swagger:
   title: spring boot3新工程模板
   description: 使用spring boot3 + jdk17重新搭建的工程模板

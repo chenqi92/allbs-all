@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.allbs.admin.dao.sys.SysDictDao">
+    <resultMap type="cn.allbs.admin.entity.sys.SysDictEntity" id="SysDictMap">
+        <result property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="description" column="description"/>
+        <result property="remarks" column="remarks"/>
+        <result property="delFlg" column="del_flg"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        `id`,
+        `type`,
+        `description`,
+        `remarks`,
+        `del_flg`,
+        `create_time`,
+        `update_time`,
+        `create_user`,
+        `update_user`
+    </sql>
+
+    <select id="queryList" resultType="cn.allbs.admin.vo.sys.SysDictVO">
+        select
+        `id`,
+        `type`,
+        `description`,
+        `remarks`,
+        `del_flg`,
+        `create_time`,
+        `update_time`,
+        `create_user`,
+        `update_user`
+        from sys_dict
+        <where>
+            AND del_flg = 0
+            <if test="sysDictDTO.id != null">
+                AND `id` = #{sysDictDTO.id}
+            </if>
+            AND del_flg = 0
+            <if test="sysDictDTO.type != null and sysDictDTO.type != ''">
+                AND `type` like concat('%', #{sysDictDTO.type} ,'%')
+            </if>
+            AND del_flg = 0
+            <if test="sysDictDTO.description != null and sysDictDTO.description != ''">
+                AND `description` like concat('%', #{sysDictDTO.description} ,'%')
+            </if>
+            AND del_flg = 0
+            <if test="sysDictDTO.remarks != null and sysDictDTO.remarks != ''">
+                AND `remarks` like concat('%', #{sysDictDTO.remarks} ,'%')
+            </if>
+            AND del_flg = 0
+            AND del_flg = 0
+            <if test="sysDictDTO.createTime != null">
+                AND `create_time` = #{sysDictDTO.createTime}
+            </if>
+            AND del_flg = 0
+            <if test="sysDictDTO.updateTime != null">
+                AND `update_time` = #{sysDictDTO.updateTime}
+            </if>
+            AND del_flg = 0
+            <if test="sysDictDTO.createUser != null and sysDictDTO.createUser != ''">
+                AND `create_user` like concat('%', #{sysDictDTO.createUser} ,'%')
+            </if>
+            AND del_flg = 0
+            <if test="sysDictDTO.updateUser != null and sysDictDTO.updateUser != ''">
+                AND `update_user` like concat('%', #{sysDictDTO.updateUser} ,'%')
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -23,6 +23,7 @@
         <mybatis-spring.version>3.0.3</mybatis-spring.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <jsoup.version>1.17.2</jsoup.version>
+        <jwt.version>0.12.5</jwt.version>
     </properties>
     <dependencies>
         <dependency>
@@ -126,6 +127,17 @@
             <version>${jsoup.version}</version>
         </dependency>
         <!-- xss相关结束 -->
+        <!-- spring security 开始 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jwt.version}</version>
+        </dependency>
+        <!-- spring security 结束 -->
     </dependencies>
 
     <build>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.allbs.admin.dao.sys.SysDeptRelationDao">
+    <resultMap type="cn.allbs.admin.entity.sys.SysDeptRelationEntity" id="SysDeptRelationMap">
+        <result property="ancestor" column="ancestor"/>
+        <result property="descendant" column="descendant"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        `ancestor`,
+        `descendant`
+    </sql>
+
+    <select id="queryList" resultType="cn.allbs.admin.vo.sys.SysDeptRelationVO">
+        select
+        `ancestor`,
+        `descendant`
+        from sys_dept_relation
+        <where>
+            <if test="sysDeptRelationDTO.ancestor != null">
+                AND `ancestor` = #{sysDeptRelationDTO.ancestor}
+            </if>
+            <if test="sysDeptRelationDTO.descendant != null">
+                AND `descendant` = #{sysDeptRelationDTO.descendant}
+            </if>
+        </where>
+    </select>
+</mapper>
