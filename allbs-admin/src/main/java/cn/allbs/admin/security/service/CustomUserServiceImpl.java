@@ -40,7 +40,7 @@ public class CustomUserServiceImpl implements UserDetailsService {
         Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(dbAuthsSet.toArray(new String[0]));
         SysUserEntity user = userInfo.getSysUser();
         // 判断用户是否为正常使用的状态
-        boolean enabled = SecurityConstant.STATUS_NORMAL.equals(user.getLockFlag());
+        boolean enabled = SecurityConstant.STATUS_NORMAL.equals(user.getLockFlg());
         // @formatter:off
         return new SysUser(
                 // 用户id

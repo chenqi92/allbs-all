@@ -16,12 +16,12 @@ public interface SecurityConstant {
     /**
      * 正常用户
      */
-    String STATUS_NORMAL = "0";
+    Integer STATUS_NORMAL = 0;
 
     /**
      * 冻结
      */
-    String STATUS_LOCK = "9";
+    Integer STATUS_LOCK = 9;
 
     /**
      * 角色前缀
