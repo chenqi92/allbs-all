@@ -1,5 +1,6 @@
 package cn.allbs.admin.service.sys;
 
+import cn.allbs.admin.security.model.MenuVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -33,4 +34,12 @@ public interface SysMenuService extends IService<SysMenuEntity> {
      * @return List<SysMenuVO>
      */
     List<SysMenuVO> queryList(SysMenuDTO sysMenuDTO);
+
+    /**
+     * 通过角色编号查询URL 权限
+     *
+     * @param roleId 角色ID
+     * @return 菜单列表
+     */
+    List<MenuVO> findMenuByRoleId(Long roleId);
 }

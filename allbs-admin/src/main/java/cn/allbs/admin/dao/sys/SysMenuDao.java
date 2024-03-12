@@ -1,5 +1,6 @@
 package cn.allbs.admin.dao.sys;
 
+import cn.allbs.admin.security.model.MenuVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -36,4 +37,12 @@ public interface SysMenuDao extends BaseMapper<SysMenuEntity> {
      * @return List<SysMenuVO>
      */
     List<SysMenuVO> queryList(@Param("sysMenuDTO") SysMenuDTO sysMenuDTO);
+
+    /**
+     * 通过角色编号查询菜单
+     *
+     * @param roleId 角色ID
+     * @return
+     */
+    List<MenuVO> listMenusByRoleId(@Param("roleId") Long roleId);
 }
