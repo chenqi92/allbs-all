@@ -4,12 +4,15 @@ import cn.allbs.admin.security.annotation.IgnoreUri;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
@@ -31,13 +34,19 @@ import java.util.stream.Collectors;
  * @date 2024/3/8
  */
 @Slf4j
-@Configuration
 @RequiredArgsConstructor
-public class PermitAllUrlProperties implements InitializingBean {
+@ConditionalOnExpression("!'${security.ignore-urls}'.isEmpty()")
+@ConfigurationProperties(prefix = "security")
+public class PermitUrlProperties implements InitializingBean {
 
     private static final Pattern PATTERN = Pattern.compile("\\{(.*?)\\}");
 
     private final WebApplicationContext applicationContext;
+
+    @Getter
+    @Setter
+    @NestedConfigurationProperty
+    private List<String> ignoreUrls = new ArrayList<>();
 
 
     @Getter

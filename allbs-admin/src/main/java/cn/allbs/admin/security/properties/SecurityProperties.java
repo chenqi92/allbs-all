@@ -13,13 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
-
 @Data
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@ConfigurationProperties(prefix = "security")
+@ConfigurationProperties(prefix = "jwt")
 public class SecurityProperties {
 
     /**
@@ -36,9 +34,4 @@ public class SecurityProperties {
      * 自定义签名
      */
     private String signKey;
-
-    /**
-     * 忽略鉴权得url
-     */
-    private List<String> ignoreUrls;
 }
