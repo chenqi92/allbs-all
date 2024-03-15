@@ -2,6 +2,7 @@ package cn.allbs.admin.security;
 
 import cn.allbs.admin.security.filter.TokenAuthenticationFilter;
 import cn.allbs.admin.security.handler.PasswordLogoutSuccessHandler;
+import cn.allbs.admin.security.handler.SecurityLogoutHandler;
 import cn.allbs.admin.security.properties.PermitUrlProperties;
 import cn.allbs.admin.security.service.CustomUserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +64,7 @@ public class CustomSecurityConfig {
                 // 禁用session
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .logout(logout -> logout.logoutUrl("/logout").addLogoutHandler(new SecurityLogoutHandler(redisTemplate)).deleteCookies("rememberMe").logoutSuccessHandler(logoutSuccessHandler()))
                 // 配置拦截信息
                 .authorizeHttpRequests(authorization -> authorization
                                 // 允许所有的OPTIONS请求
