@@ -1,6 +1,8 @@
 package cn.allbs.admin.security;
 
 import cn.allbs.admin.security.filter.TokenAuthenticationFilter;
+import cn.allbs.admin.security.handler.Http401AuthenticationEntryPoint;
+import cn.allbs.admin.security.handler.Http403AccessDeniedEntryPoint;
 import cn.allbs.admin.security.handler.PasswordLogoutSuccessHandler;
 import cn.allbs.admin.security.handler.SecurityLogoutHandler;
 import cn.allbs.admin.security.properties.PermitUrlProperties;
@@ -61,6 +63,10 @@ public class CustomSecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 // 禁用默认登出页
                 .logout(AbstractHttpConfigurer::disable)
+                // 自定义需要权限验证的提示code和文字说明
+                .exceptionHandling(handler -> handler.authenticationEntryPoint(new Http401AuthenticationEntryPoint()))
+                // 自定义403 forbidden提示
+                .exceptionHandling(handler -> handler.accessDeniedHandler(new Http403AccessDeniedEntryPoint()))
                 // 禁用session
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

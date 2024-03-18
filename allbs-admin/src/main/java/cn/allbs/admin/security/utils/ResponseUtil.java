@@ -42,7 +42,7 @@ public class ResponseUtil {
      */
     public static void write(@NotNull HttpServletResponse response, IResultCode data) throws IOException {
         response.setContentType("application/json; charset=utf-8");
-        R result = R.failed(data);
+        R result = R.fail(data);
         String json = JsonUtil.toJson(result);
         response.getWriter().print(json);
         response.getWriter().flush();
