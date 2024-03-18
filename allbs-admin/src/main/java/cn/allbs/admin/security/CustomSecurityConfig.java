@@ -70,10 +70,14 @@ public class CustomSecurityConfig {
                 // 禁用session
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .logout(logout -> logout.logoutUrl("/logout").addLogoutHandler(new SecurityLogoutHandler(redisTemplate)).deleteCookies("rememberMe").logoutSuccessHandler(logoutSuccessHandler()))
+                // 登出
+                .logout(logout -> logout
+                        .logoutUrl("/logout").addLogoutHandler(new SecurityLogoutHandler(redisTemplate)).deleteCookies("rememberMe").logoutSuccessHandler(logoutSuccessHandler()))
+                // 登录
+                .formLogin(login -> login.loginPage("/login").permitAll())
                 // 配置拦截信息
                 .authorizeHttpRequests(authorization -> authorization
-                                // 允许所有的OPTIONS请求
+                                // 跨域允许所有的OPTIONS请求
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 // 放行白名单
                                 .requestMatchers(permitUrlProperties.getIgnoreUrls()

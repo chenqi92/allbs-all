@@ -42,4 +42,19 @@ public interface SecurityConstant {
      * 创建时间
      */
     String CREATED_TIME = "createTime";
+
+    /**
+     * 过期时间
+     */
+    Long EXPIRE_TIME = 7200L;
+
+    /**
+     * 刷新时间
+     */
+    Long REFRESH_TIME = 43200L;
+
+    /**
+     * 签名
+     */
+    String SIGN_KEY = "allbs";
 }

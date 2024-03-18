@@ -58,7 +58,7 @@ public class CustomUserServiceImpl implements UserDetailsService {
                 true,
                 true,
                 // 判断用户是否为锁定状态
-                !SecurityConstant.STATUS_LOCK.equals(user.getLockFlag()),
+                !SecurityConstant.STATUS_LOCK.equals(user.getLockFlg()),
                 // 权限列表
                 authorities,
                 Optional.ofNullable(userInfo.getDeptIds()).orElse(new HashSet<>())

@@ -1,7 +1,6 @@
 package cn.allbs.admin.security.utils;
 
 import cn.allbs.admin.security.constant.SecurityConstant;
-import cn.allbs.admin.security.properties.SecurityProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static cn.allbs.admin.security.constant.SecurityConstant.CREATED_TIME;
+import static cn.allbs.admin.security.constant.SecurityConstant.*;
 
 /**
  * 类 TokenUtil
@@ -27,8 +26,6 @@ import static cn.allbs.admin.security.constant.SecurityConstant.CREATED_TIME;
  */
 @Slf4j
 public class TokenUtil {
-
-    private SecurityProperties securityProperties;
 
     /**
      * 生成令牌
@@ -50,7 +47,7 @@ public class TokenUtil {
      * @return 令牌
      */
     private static String generateToken(Map<String, Object> claims, String subject) {
-        Date expirationDate = new Date(System.currentTimeMillis() + securityProperties.getExpireTime());
+        Date expirationDate = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         return Jwts.builder().subject(subject).claims(claims).expiration(expirationDate).signWith(getSignKey()).compact();
     }
 
@@ -211,7 +208,7 @@ public class TokenUtil {
      * @return 签名
      */
     private static SecretKey getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(securityProperties.getSignKey());
+        byte[] keyBytes = Decoders.BASE64.decode(SIGN_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
