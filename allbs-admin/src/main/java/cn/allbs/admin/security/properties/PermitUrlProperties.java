@@ -2,6 +2,7 @@ package cn.allbs.admin.security.properties;
 
 import cn.allbs.admin.security.annotation.IgnoreUri;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import jakarta.servlet.ServletContext;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
  * @author ChenQi
  * @date 2024/3/8
  */
+@Configuration
 @Slf4j
 @RequiredArgsConstructor
 @ConditionalOnExpression("!'${security.ignore-urls}'.isEmpty()")
@@ -42,7 +45,7 @@ public class PermitUrlProperties implements InitializingBean {
 
     private static final Pattern PATTERN = Pattern.compile("\\{(.*?)\\}");
 
-    private final WebApplicationContext applicationContext;
+    private final ServletContext servletContext;
 
     @Getter
     @Setter
@@ -59,8 +62,14 @@ public class PermitUrlProperties implements InitializingBean {
         for (HttpMethod httpMethod : httpMethods) {
             ignoreUrlsMap.put(httpMethod, new ArrayList<>());
         }
-        RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
-        Map<RequestMappingInfo, HandlerMethod> map = mapping.getHandlerMethods();
+        WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        Map<RequestMappingInfo, HandlerMethod> map;
+        if (Optional.ofNullable(applicationContext).map(a -> a.getBean(RequestMappingHandlerMapping.class)).isPresent()) {
+            RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
+            map = mapping.getHandlerMethods();
+        } else {
+            map = new HashMap<>();
+        }
 
         for (RequestMappingInfo info : map.keySet()) {
             HandlerMethod handlerMethod = map.get(info);

@@ -29,7 +29,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TestController {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<Object, Object> redisTemplate;
 
     /**
      * 第一个接口测试

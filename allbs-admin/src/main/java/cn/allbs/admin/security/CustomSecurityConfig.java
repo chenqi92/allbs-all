@@ -8,7 +8,6 @@ import cn.allbs.admin.security.handler.SecurityLogoutHandler;
 import cn.allbs.admin.security.properties.PermitUrlProperties;
 import cn.allbs.admin.security.service.CustomUserServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,7 +33,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableConfigurationProperties(PermitUrlProperties.class)
 public class CustomSecurityConfig {
 
     private final PermitUrlProperties permitUrlProperties;
