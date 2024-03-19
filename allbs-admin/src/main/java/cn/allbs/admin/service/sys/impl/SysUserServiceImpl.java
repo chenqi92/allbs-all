@@ -79,7 +79,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 //            return cache.get(username, UserInfo.class);
 //        }
         SysUserEntity sysUserEntity = sysUserDao.selectOne(Wrappers.<SysUserEntity>query().lambda().eq(SysUserEntity::getUsername, username));
-        if (Optional.of(sysUserEntity).map(SysUserEntity::getUsername).isEmpty()) {
+        if (Optional.ofNullable(sysUserEntity).map(SysUserEntity::getUsername).isEmpty()) {
             throw new UserNameNotFoundException();
         }
         UserInfo userInfo = this.getUserInfo(sysUserEntity);

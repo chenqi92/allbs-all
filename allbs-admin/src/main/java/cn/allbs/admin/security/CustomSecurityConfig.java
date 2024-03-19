@@ -1,6 +1,7 @@
 package cn.allbs.admin.security;
 
 import cn.allbs.admin.security.filter.TokenAuthenticationFilter;
+import cn.allbs.admin.security.grant.CustomDaoAuthenticationProvider;
 import cn.allbs.admin.security.handler.Http401AuthenticationEntryPoint;
 import cn.allbs.admin.security.handler.Http403AccessDeniedEntryPoint;
 import cn.allbs.admin.security.handler.PasswordLogoutSuccessHandler;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -57,6 +59,14 @@ public class CustomSecurityConfig {
     }
 
     @Bean
+    public AuthenticationProvider authenticationProvider() {
+        CustomDaoAuthenticationProvider authProvider = new CustomDaoAuthenticationProvider();
+        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setUserDetailsService(customUserService);
+        return authProvider;
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // @formatter:on
         return http
@@ -78,12 +88,12 @@ public class CustomSecurityConfig {
                 // 登出
                 .logout(logout -> logout
                         .logoutUrl("/logout").addLogoutHandler(new SecurityLogoutHandler(redisTemplate)).deleteCookies("rememberMe").logoutSuccessHandler(logoutSuccessHandler()))
-                // 登录
-                .formLogin(login -> login.loginPage("/login").permitAll())
                 // 配置拦截信息
                 .authorizeHttpRequests(authorization -> authorization
                         // 跨域允许所有的OPTIONS请求
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // 权限操作相关接口
+                        .requestMatchers("/auth/**").permitAll()
                         // 放行白名单
                         .requestMatchers(permitUrlProperties.getIgnoreUrls()
                                 .stream()
@@ -104,8 +114,8 @@ public class CustomSecurityConfig {
                             return new AuthorizationDecision(false);
                         })
                 )
-                // 注册重写后的UserDetailsService实现
-                .userDetailsService(customUserService)
+                // 自定义认证处理
+                .authenticationProvider(authenticationProvider())
                 // 注册自定义拦截器
                 .addFilterBefore(new TokenAuthenticationFilter(customUserService, redisTemplate), UsernamePasswordAuthenticationFilter.class)
                 .build();
