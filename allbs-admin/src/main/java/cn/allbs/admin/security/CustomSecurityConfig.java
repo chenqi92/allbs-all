@@ -7,6 +7,7 @@ import cn.allbs.admin.security.handler.PasswordLogoutSuccessHandler;
 import cn.allbs.admin.security.handler.SecurityLogoutHandler;
 import cn.allbs.admin.security.properties.PermitUrlProperties;
 import cn.allbs.admin.security.service.CustomUserServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,6 +26,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 类 CustomSecurityConfig
@@ -77,15 +82,27 @@ public class CustomSecurityConfig {
                 .formLogin(login -> login.loginPage("/login").permitAll())
                 // 配置拦截信息
                 .authorizeHttpRequests(authorization -> authorization
-                                // 跨域允许所有的OPTIONS请求
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                // 放行白名单
-                                .requestMatchers(permitUrlProperties.getIgnoreUrls()
-                                        .stream()
-                                        .map(AntPathRequestMatcher::new)
-                                        .toList()
-                                        .toArray(new AntPathRequestMatcher[0])).permitAll()
+                        // 跨域允许所有的OPTIONS请求
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // 放行白名单
+                        .requestMatchers(permitUrlProperties.getIgnoreUrls()
+                                .stream()
+                                .map(AntPathRequestMatcher::new)
+                                .toList()
+                                .toArray(new AntPathRequestMatcher[0])).permitAll()
                         // 放行注解指定的接口
+                        .anyRequest().access((auth, object) -> {
+                            // 获取当前的访问路径
+                            HttpServletRequest request = object.getRequest();
+                            if (permitUrlProperties.getIgnoreUrlsMap().entrySet().stream()
+                                    .filter(entry -> entry.getKey().matches(request.getMethod()))
+                                    .map(Map.Entry::getValue)
+                                    .flatMap(List::stream)
+                                    .anyMatch(value -> value.contains(request.getRequestURI()))) {
+                                return new AuthorizationDecision(true);
+                            }
+                            return new AuthorizationDecision(false);
+                        })
                 )
                 // 注册重写后的UserDetailsService实现
                 .userDetailsService(customUserService)

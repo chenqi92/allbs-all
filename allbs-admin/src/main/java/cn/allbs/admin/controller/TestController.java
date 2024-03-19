@@ -2,6 +2,7 @@ package cn.allbs.admin.controller;
 
 import cn.allbs.admin.config.core.R;
 import cn.allbs.admin.config.enums.SexEnum;
+import cn.allbs.admin.security.annotation.IgnoreUri;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,6 +39,7 @@ public class TestController {
      */
     @Operation(summary = "测试方法1")
     @GetMapping("test1")
+    @IgnoreUri
     public String test1() {
         return "Hello World";
     }
