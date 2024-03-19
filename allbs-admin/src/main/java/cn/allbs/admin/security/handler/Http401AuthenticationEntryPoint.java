@@ -17,7 +17,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 public class Http401AuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
-        ResponseUtil.out(response, R.fail(SystemCode.FORBIDDEN_401));
+        ResponseUtil.out(response, SystemCode.FORBIDDEN_401);
     }
 }
 

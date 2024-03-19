@@ -20,14 +20,14 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class ResponseUtil {
 
-    public static void out(@NotNull HttpServletResponse response, R<?> r) {
+    public static void out(@NotNull HttpServletResponse response, IResultCode r) {
         ObjectMapper objectMapper = new ObjectMapper();
         response.setStatus(r.getCode());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
         try {
-            objectMapper.writeValue(response.getWriter(), r);
+            objectMapper.writeValue(response.getWriter(), R.fail(null, r.getMsg(), r.getCode()));
         } catch (IOException e) {
             log.error(e.getLocalizedMessage());
         }

@@ -17,6 +17,6 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 public class Http403AccessDeniedEntryPoint implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) {
-        ResponseUtil.out(response, R.fail(SystemCode.FORBIDDEN_403));
+        ResponseUtil.out(response, SystemCode.FORBIDDEN_403);
     }
 }
