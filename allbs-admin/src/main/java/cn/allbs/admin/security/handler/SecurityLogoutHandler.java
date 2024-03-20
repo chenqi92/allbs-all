@@ -28,8 +28,11 @@ public class SecurityLogoutHandler implements LogoutHandler {
 
     private final RedisTemplate<Object, Object> redisTemplate;
 
-    public SecurityLogoutHandler(RedisTemplate<Object, Object> redisTemplate) {
+    private final TokenUtil tokenUtil;
+
+    public SecurityLogoutHandler(RedisTemplate<Object, Object> redisTemplate, TokenUtil tokenUtil) {
         this.redisTemplate = redisTemplate;
+        this.tokenUtil = tokenUtil;
     }
 
     @Override
@@ -43,7 +46,7 @@ public class SecurityLogoutHandler implements LogoutHandler {
                 return;
             }
             // 解析登出用户名
-            String username = TokenUtil.getUsernameFromToken(token.replace(SecurityConstant.BEARER_TYPE, StringPool.EMPTY));
+            String username = tokenUtil.getUsernameFromToken(token.replace(SecurityConstant.BEARER_TYPE, StringPool.EMPTY));
             if (!StringUtils.hasText(username)) {
                 ResponseUtil.write(response, SystemCode.TOKEN_NOT_IN_SYSTEM);
             }

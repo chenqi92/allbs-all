@@ -40,6 +40,12 @@ security:
     - /configuration/ui
     - /swagger-resources/**
 
+token:
+  sign-key: 9165a04ad1d341f48eb86fcd8cb3c53cALLBS6ceda1a095b04c60964f724961df2a3aKEY465c45aa93a940d5b31f1feefccbcd75 # 签名
+  expired-time: 7200 # token过期时间 2小时 单位秒
+  refresh-time: 259200 # 刷新时间 3天单位秒
+  multi-online: false # 是否允许多端登录
+
 swagger:
   title: spring boot3新工程模板
   description: 使用spring boot3 + jdk17重新搭建的工程模板

@@ -32,20 +32,23 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final RedisTemplate<Object, Object> redisTemplate;
 
-    public TokenAuthenticationFilter(UserDetailsService userDetailsService, RedisTemplate<Object, Object> redisTemplate) {
+    private final TokenUtil tokenUtil;
+
+    public TokenAuthenticationFilter(UserDetailsService userDetailsService, RedisTemplate<Object, Object> redisTemplate, TokenUtil tokenUtil) {
         this.userDetailsService = userDetailsService;
         this.redisTemplate = redisTemplate;
+        this.tokenUtil = tokenUtil;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = TokenUtil.getToken(request);
+        String token = tokenUtil.getToken(request);
         if (!Boolean.TRUE.equals(redisTemplate.hasKey(CACHE_TOKEN + token))) {
             chain.doFilter(request, response);
             return;
         }
         // 如果token存在 则验证token是否正确和过期
-        if (!TokenUtil.validateToken(token)) {
+        if (!tokenUtil.validateToken(token)) {
             // token 验证不通过
             chain.doFilter(request, response);
             return;
@@ -56,7 +59,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private Authentication getAuthentication(String token) {
-        String username = TokenUtil.getUsernameFromToken(token);
+        String username = tokenUtil.getUsernameFromToken(token);
         if (StringUtils.hasText(username)) {
             // 查询当前用户权限集合,因为并没有将权限列表放在token中所以无法通过token解析出来，去数据库或者redis中获取,当然放在token中也是可以的
             SysUser userInfo = (SysUser) this.userDetailsService.loadUserByUsername(username);

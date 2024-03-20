@@ -51,10 +51,5 @@ public interface SecurityConstant {
     /**
      * 刷新时间
      */
-    Long REFRESH_TIME = 43200L;
-
-    /**
-     * 签名
-     */
-    String SIGN_KEY = "allbs";
+    Long REFRESH_TIME = 43200 * 1000L;
 }

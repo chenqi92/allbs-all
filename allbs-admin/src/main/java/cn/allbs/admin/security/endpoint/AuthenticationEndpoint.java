@@ -35,6 +35,7 @@ public class AuthenticationEndpoint {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder encoder;
     private final RedisTemplate<Object, Object> redisTemplate;
+    private final TokenUtil tokenUtil;
 
 
     @PostMapping("registerUser")
@@ -50,11 +51,11 @@ public class AuthenticationEndpoint {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // 生成并返回token给客户端，后续访问携带此token
         CustomJwtToken token = new CustomJwtToken(UUID.randomUUID().toString());
-        String tokenStr = TokenUtil.generateToken(authentication);
+        String tokenStr = tokenUtil.generateToken(authentication);
         token.setToken(tokenStr);
         token.setPermissions(authentication.getAuthorities());
         // redis中储存token
-        redisTemplate.opsForValue().set(CACHE_TOKEN + tokenStr, tokenStr, EXPIRE_TIME, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(CACHE_TOKEN + tokenStr, tokenStr, EXPIRE_TIME, TimeUnit.SECONDS);
         // 返回Token 相关信息
         return R.ok(token);
     }

@@ -8,6 +8,7 @@ import cn.allbs.admin.security.handler.PasswordLogoutSuccessHandler;
 import cn.allbs.admin.security.handler.SecurityLogoutHandler;
 import cn.allbs.admin.security.properties.PermitUrlProperties;
 import cn.allbs.admin.security.service.CustomUserServiceImpl;
+import cn.allbs.admin.security.utils.TokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -50,6 +51,8 @@ public class CustomSecurityConfig {
 
     private final RedisTemplate<Object, Object> redisTemplate;
 
+    private final TokenUtil tokenUtil;
+
     /**
      * 鉴权管理
      */
@@ -87,7 +90,7 @@ public class CustomSecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 登出
                 .logout(logout -> logout
-                        .logoutUrl("/logout").addLogoutHandler(new SecurityLogoutHandler(redisTemplate)).deleteCookies("rememberMe").logoutSuccessHandler(logoutSuccessHandler()))
+                        .logoutUrl("/logout").addLogoutHandler(new SecurityLogoutHandler(redisTemplate, tokenUtil)).deleteCookies("rememberMe").logoutSuccessHandler(logoutSuccessHandler()))
                 // 配置拦截信息
                 .authorizeHttpRequests(authorization -> authorization
                         // 跨域允许所有的OPTIONS请求
@@ -117,7 +120,7 @@ public class CustomSecurityConfig {
                 // 自定义认证处理
                 .authenticationProvider(authenticationProvider())
                 // 注册自定义拦截器
-                .addFilterBefore(new TokenAuthenticationFilter(customUserService, redisTemplate), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new TokenAuthenticationFilter(customUserService, redisTemplate, tokenUtil), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
