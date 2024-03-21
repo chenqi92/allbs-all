@@ -31,3 +31,11 @@ POST auth/login
     "userName":"",
     "password":""
 }
+
+#### 忽略鉴权的接口
+默认所有接口都要鉴权
+如果需要放开指定接口，可在controller种指定接口或者整个类上添加注解@IgnoreUri
+或者在yml种的添加
+security:
+    ignore-urls:
+        - 需要放开的接口或者路径

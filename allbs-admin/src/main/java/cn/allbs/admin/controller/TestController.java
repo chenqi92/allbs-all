@@ -25,7 +25,6 @@ import java.util.Map;
  * @author ChenQi
  * @date 2024/2/26
  */
-@IgnoreUri
 @Tag(name = "测试类")
 @RequestMapping(value = "/test")
 @RestController
