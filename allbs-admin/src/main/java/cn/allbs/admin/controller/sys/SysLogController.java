@@ -1,5 +1,6 @@
 package cn.allbs.admin.controller.sys;
 
+import cn.allbs.admin.security.annotation.IgnoreUri;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import cn.allbs.admin.config.core.R;
@@ -45,6 +46,7 @@ public class SysLogController {
      *
      * @return List<SysLogDTO> 分页当前账户下所有日志表信息
      */
+    @PreAuthorize("ps.hasPms('sys_dict_edit')")
     @Operation(description = "分页日志表信息表数据", summary = "分页查询日志表信息表数据", tags = {"分页查询所有数据"})
     @GetMapping("queryPage")
     @Parameters({@Parameter(description = "当前页", name = "current", in = ParameterIn.QUERY, required = true, schema = @Schema(implementation = Integer.class)), @Parameter(description = "当前页条数", name = "size", in = ParameterIn.QUERY, required = true, schema = @Schema(implementation = Integer.class))})

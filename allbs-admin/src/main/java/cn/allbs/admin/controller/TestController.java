@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import java.util.Map;
  * @author ChenQi
  * @date 2024/2/26
  */
+@IgnoreUri
 @Tag(name = "测试类")
 @RequestMapping(value = "/test")
 @RestController
@@ -39,7 +41,6 @@ public class TestController {
      */
     @Operation(summary = "测试方法1")
     @GetMapping("test1")
-    @IgnoreUri
     public String test1() {
         return "Hello World";
     }
@@ -73,6 +74,7 @@ public class TestController {
     }
 
     @GetMapping("test5")
+    @PreAuthorize("@ps.hasPms('test:time')")
     @Operation(summary = "时间格式化接口测试", description = "测试时间全局格式化")
     public R<LocalDateTime> testTime() {
         return R.ok(LocalDateTime.now());

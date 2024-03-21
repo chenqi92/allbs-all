@@ -51,12 +51,12 @@ swagger:
   description: 使用spring boot3 + jdk17重新搭建的工程模板
   version: 1.0
   securitySchemes:
-    token:
+    Authorization:
       type: APIKEY  # 类型
       in: HEADER    # 放header里面
       name: token # header-key
   servers:
-    - url: http://127.0.0.1:8888 # 自定义服务器 URL，如部署在docker中时可以配置
+    - url: http://${spring.application.name}:8888 # 自定义服务器 URL，如部署在docker中时可以配置
       description: 本地服务器
 springdoc:
   api-docs:

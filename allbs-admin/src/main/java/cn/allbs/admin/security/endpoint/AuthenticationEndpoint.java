@@ -11,14 +11,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static cn.allbs.admin.config.constant.CacheConstant.CACHE_TOKEN;
-import static cn.allbs.admin.security.constant.SecurityConstant.EXPIRE_TIME;
 
 /**
  * 类 AuthenticationEndpoint
@@ -33,7 +31,6 @@ import static cn.allbs.admin.security.constant.SecurityConstant.EXPIRE_TIME;
 public class AuthenticationEndpoint {
 
     private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder encoder;
     private final RedisTemplate<Object, Object> redisTemplate;
     private final TokenUtil tokenUtil;
 
@@ -45,6 +42,7 @@ public class AuthenticationEndpoint {
 
     @PostMapping("/login")
     public R<?> login(@Valid @RequestBody LoginDTO loginDTO) {
+        // 首先解码
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getUserName(), loginDTO.getPassword())
         );
@@ -55,7 +53,7 @@ public class AuthenticationEndpoint {
         token.setToken(tokenStr);
         token.setPermissions(authentication.getAuthorities());
         // redis中储存token
-        redisTemplate.opsForValue().set(CACHE_TOKEN + tokenStr, tokenStr, EXPIRE_TIME, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(CACHE_TOKEN + tokenStr, tokenStr, tokenUtil.expireTime(), TimeUnit.SECONDS);
         // 返回Token 相关信息
         return R.ok(token);
     }

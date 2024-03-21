@@ -44,12 +44,7 @@ public interface SecurityConstant {
     String CREATED_TIME = "createTime";
 
     /**
-     * 过期时间
+     * 签发单位
      */
-    Long EXPIRE_TIME = 7200L;
-
-    /**
-     * 刷新时间
-     */
-    Long REFRESH_TIME = 43200 * 1000L;
+    String CURRENT_PRODUCT = "allbs";
 }

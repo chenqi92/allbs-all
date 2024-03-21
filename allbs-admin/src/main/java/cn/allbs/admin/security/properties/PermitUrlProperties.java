@@ -15,6 +15,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
@@ -22,7 +24,10 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -33,27 +38,22 @@ import java.util.stream.Collectors;
  * @date 2024/3/8
  */
 @Slf4j
+@Getter
 @ConditionalOnExpression("!'${security.ignore-urls}'.isEmpty()")
 @ConfigurationProperties(prefix = "security")
 public class PermitUrlProperties implements InitializingBean {
 
     private static final Pattern PATTERN = Pattern.compile("\\{(.*?)\\}");
 
-    @Getter
     @Setter
     @NestedConfigurationProperty
     private List<String> ignoreUrls = new ArrayList<>();
 
 
-    @Getter
-    private final Map<HttpMethod, List<String>> ignoreUrlsMap = new HashMap<>();
+    private final List<RequestMatcher> matchers = new ArrayList<>();
 
     @Override
     public void afterPropertiesSet() {
-        HttpMethod[] httpMethods = HttpMethod.values();
-        for (HttpMethod httpMethod : httpMethods) {
-            ignoreUrlsMap.put(httpMethod, new ArrayList<>());
-        }
         RequestMappingHandlerMapping mapping = SpringContextHolder.getBean(RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> map = mapping.getHandlerMethods();
 
@@ -90,7 +90,7 @@ public class PermitUrlProperties implements InitializingBean {
                 .collect(Collectors.toList());
         String resultUrl = RegExUtils.replaceAll(url, PATTERN, "*");
         if (!CollectionUtils.isEmpty(methodList)) {
-            ignoreUrlsMap.get(HttpMethod.valueOf(StringUtils.join(methodList, StringPool.COMMA))).add(resultUrl);
+            matchers.add(AntPathRequestMatcher.antMatcher(HttpMethod.valueOf(StringUtils.join(methodList, StringPool.COMMA)), resultUrl));
         }
     }
 }

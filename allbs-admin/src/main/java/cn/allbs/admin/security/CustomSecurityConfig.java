@@ -9,7 +9,6 @@ import cn.allbs.admin.security.handler.SecurityLogoutHandler;
 import cn.allbs.admin.security.properties.PermitUrlProperties;
 import cn.allbs.admin.security.service.CustomUserServiceImpl;
 import cn.allbs.admin.security.utils.TokenUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +17,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,9 +27,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import java.util.List;
-import java.util.Map;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
  * 类 CustomSecurityConfig
@@ -103,19 +99,8 @@ public class CustomSecurityConfig {
                                 .map(AntPathRequestMatcher::new)
                                 .toList()
                                 .toArray(new AntPathRequestMatcher[0])).permitAll()
-                        // 放行注解指定的接口
-                        .anyRequest().access((auth, object) -> {
-                            // 获取当前的访问路径
-                            HttpServletRequest request = object.getRequest();
-                            if (permitUrlProperties.getIgnoreUrlsMap().entrySet().stream()
-                                    .filter(entry -> entry.getKey().matches(request.getMethod()))
-                                    .map(Map.Entry::getValue)
-                                    .flatMap(List::stream)
-                                    .anyMatch(value -> value.contains(request.getRequestURI()))) {
-                                return new AuthorizationDecision(true);
-                            }
-                            return new AuthorizationDecision(false);
-                        })
+                        .requestMatchers(permitUrlProperties.getMatchers().toArray(new RequestMatcher[0])).permitAll()
+                        .anyRequest().authenticated()
                 )
                 // 自定义认证处理
                 .authenticationProvider(authenticationProvider())

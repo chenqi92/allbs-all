@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static cn.allbs.admin.security.constant.SecurityConstant.CREATED_TIME;
+import static cn.allbs.admin.security.constant.SecurityConstant.CURRENT_PRODUCT;
 
 /**
  * 类 TokenUtil
@@ -57,10 +58,12 @@ public class TokenUtil {
      * @return 令牌
      */
     private String generateToken(Map<String, Object> claims, String subject) {
-        Date expirationDate = new Date(System.currentTimeMillis() + tokenProperties.getExpiredTime());
+        Date expirationDate = new Date(System.currentTimeMillis() + tokenProperties.getExpiredTime() * 1000);
         return Jwts.builder()
                 .subject(subject)
                 .claims(claims)
+                .issuer(CURRENT_PRODUCT)
+                .issuedAt(new Date())
                 .expiration(expirationDate)
                 .signWith(getSignKey())
                 .compact();
@@ -181,7 +184,7 @@ public class TokenUtil {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token == null) {
             token = request.getHeader(SecurityConstant.TOKEN);
-        } else if (token.contains(SecurityConstant.BEARER_TYPE)) {
+        } else if (token.startsWith(SecurityConstant.BEARER_TYPE)) {
             token = token.substring(SecurityConstant.BEARER_TYPE.length());
         }
         if ("".equals(token)) {
@@ -225,5 +228,14 @@ public class TokenUtil {
     private SecretKey getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(tokenProperties.getSignKey());
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    /**
+     * 获取过期时间
+     *
+     * @return 过期时间
+     */
+    public Long expireTime() {
+        return tokenProperties.getExpiredTime();
     }
 }
