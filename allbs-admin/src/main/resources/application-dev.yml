@@ -62,6 +62,8 @@ springdoc:
   api-docs:
     enabled: true
   # 配置需要生成接口文档的扫描包
-  packages-to-scan: cn.allbs.admin.controller
+  packages-to-scan:
+    - cn.allbs.admin.controller
+    - cn.allbs.admin.security.endpoint
   # 配置需要生成接口文档的接口路径，如果增加了该节点，那么只将/user开头的接口文档生成出来
   # paths-to-match: /user/**
