@@ -4,6 +4,7 @@ import cn.allbs.admin.config.core.R;
 import cn.allbs.admin.config.dto.LoginDTO;
 import cn.allbs.admin.security.grant.CustomJwtToken;
 import cn.allbs.admin.security.utils.TokenUtil;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,20 +50,27 @@ public class AuthenticationEndpoint {
     }
 
     @PostMapping("/login")
-    public R<?> login(@Valid @RequestBody LoginDTO loginDTO) {
+    public R<CustomJwtToken> login(@Valid @RequestBody LoginDTO loginDTO) {
         // 首先解码
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getUserName(), loginDTO.getPassword())
         );
+        String tokenKey = CACHE_TOKEN + loginDTO.getUserName() + StringPool.COLON + loginDTO.getClient();
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        // 查看是否会踢同用户下线
         // 生成并返回token给客户端，后续访问携带此token
         CustomJwtToken token = new CustomJwtToken(UUID.randomUUID().toString());
+        token.setPermissions(authentication.getAuthorities());
+        // 查看是否会踢同用户下线 如果允许直接返回已存在的token，如果不允许则生成新token
+        Object redisToken = redisTemplate.opsForValue().get(tokenKey);
+        if (tokenUtil.onlineMulti() && !ObjectUtils.isEmpty(redisToken)) {
+            token.setToken(redisToken.toString());
+            return R.ok(token);
+        }
+        redisTemplate.delete(tokenKey);
         String tokenStr = tokenUtil.generateToken(authentication);
         token.setToken(tokenStr);
-        token.setPermissions(authentication.getAuthorities());
         // redis中储存token
-        redisTemplate.opsForValue().set(CACHE_TOKEN + tokenStr, tokenStr, tokenUtil.expireTime(), TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(tokenKey, tokenStr, tokenUtil.expireTime(), TimeUnit.SECONDS);
         // 返回Token 相关信息
         return R.ok(token);
     }

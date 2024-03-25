@@ -238,4 +238,13 @@ public class TokenUtil {
     public Long expireTime() {
         return tokenProperties.getExpiredTime();
     }
+
+    /**
+     * 是否允许同端账户同时在线 true 允许 false 不允许
+     *
+     * @return boolean
+     */
+    public boolean onlineMulti() {
+        return tokenProperties.getMultiOnline();
+    }
 }

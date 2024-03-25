@@ -3,6 +3,8 @@ package cn.allbs.admin.config.dto;
 import cn.allbs.admin.security.enums.ClientEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -32,9 +34,9 @@ public class LoginDTO {
     /**
      * 区分登录端
      */
-    @NotBlank
+    @NotNull
     @Schema(description = "登录端", name = "client", implementation = ClientEnum.class, type = "int32", allowableValues = {"1", "2", "3"})
-    private ClientEnum client;
+    private Integer client;
 
     /**
      * 设备编码
