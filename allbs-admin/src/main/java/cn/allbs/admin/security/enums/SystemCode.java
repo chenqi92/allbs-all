@@ -92,6 +92,10 @@ public enum SystemCode implements IResultCode {
     REQ_REJECT(SystemCode.REQ_REJECT_CODE, "请求被拒绝"),
 
     //-------------------------------------------------------------//
+    /**
+     * 数据操作相关错误
+     */
+    DB_ERROR(SystemCode.DB_ERROR_CODE, "数据库操作出错"),
 
     /**
      * 数据不存在
@@ -140,6 +144,7 @@ public enum SystemCode implements IResultCode {
     /**
      * 通用数据层 code
      */
+    public static final int DB_ERROR_CODE = 900;
     public static final int DATA_NOT_EXIST_CODE = 930;
     public static final int DATA_EXISTED_CODE = 931;
     public static final int DATA_ADD_FAILED_CODE = 932;

@@ -64,7 +64,7 @@ public class R<T> implements Serializable {
 
     private R(IResultCode resultCode, String msg, T data) {
         this.code = resultCode.getCode();
-        this.msg = resultCode.getMsg();
+        this.msg = msg;
         this.data = data;
     }
 

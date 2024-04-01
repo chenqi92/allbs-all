@@ -69,12 +69,12 @@ public class RestExceptionTranslator {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public R<Object> handleError(MethodArgumentNotValidException e) {
         log.warn("参数验证失败:{}", e.getMessage());
-        List<String> errors = new ArrayList<>();
-        e.getBindingResult().getAllErrors().forEach((error) -> {
-            String errorMessage = error.getDefaultMessage();
-            errors.add(errorMessage);
-        });
-        return R.fail(SystemCode.PARAM_BIND_ERROR, e.getMessage());
+        int count = e.getErrorCount();
+        StringBuilder errors = new StringBuilder("参数校验共有" + count + "处失败!分别为:");
+        for (FieldError error : e.getFieldErrors()) {
+            errors.append("字段").append(error.getField()).append(error.getDefaultMessage()).append(StringPool.SEMICOLON);
+        }
+        return R.fail(SystemCode.PARAM_BIND_ERROR, errors.toString());
     }
 
     @ExceptionHandler(BindException.class)
@@ -150,7 +150,7 @@ public class RestExceptionTranslator {
     public R<Object> handleError(UserNameNotFoundException e) {
         String message = e.getMessage();
         log.error("用户校验失败:{}", message);
-        return R.fail(message);
+        return R.fail(SystemCode.USERNAME_OR_PASSWORD_ERROR, message);
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
@@ -158,7 +158,7 @@ public class RestExceptionTranslator {
     public R<Object> handleError(SQLIntegrityConstraintViolationException e) {
         String message = e.getMessage();
         log.error("数据库操作异常:{}", message);
-        return R.fail("存在主键想同的数据!");
+        return R.fail(SystemCode.DB_ERROR, message);
     }
 
     /**
