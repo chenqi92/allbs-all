@@ -18,6 +18,7 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 import static cn.allbs.admin.security.constant.SecurityConstant.CREATED_TIME;

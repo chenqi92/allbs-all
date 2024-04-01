@@ -1,11 +1,18 @@
-package cn.allbs.admin.security.utils;
+package cn.allbs.admin.config.exception;
+
+import cn.allbs.admin.config.utils.io.FastStringPrintWriter;
+import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 
 /**
  * 类 Exceptions
+ *
+ * @author ChenQi
+ * @date 2024/4/1
  */
+@UtilityClass
 public class Exceptions {
 
     /**
@@ -61,5 +68,17 @@ public class Exceptions {
                 return unwrapped;
             }
         }
+    }
+
+    /**
+     * 将ErrorStack转化为String.
+     *
+     * @param ex Throwable
+     * @return {String}
+     */
+    public static String getStackTraceAsString(Throwable ex) {
+        FastStringPrintWriter printWriter = new FastStringPrintWriter(512);
+        ex.printStackTrace(printWriter);
+        return printWriter.toString();
     }
 }
