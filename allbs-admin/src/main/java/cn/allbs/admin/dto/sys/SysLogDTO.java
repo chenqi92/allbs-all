@@ -7,6 +7,7 @@ import cn.allbs.admin.entity.sys.SysLogEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 日志表(sys_log)DTO
@@ -18,4 +19,5 @@ import lombok.EqualsAndHashCode;
 @Data
 @Schema(description = "日志表 参数接收类", name = "SysLogDTO")
 public class SysLogDTO extends SysLogEntity {
+
 }

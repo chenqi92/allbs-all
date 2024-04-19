@@ -1,8 +1,8 @@
 package cn.allbs.admin.entity.sys;
 
 
-import java.time.LocalDateTime;
-
+import cn.allbs.admin.config.log.dto.LogDTO;
+import cn.allbs.admin.config.utils.ConvertUtil;
 import cn.allbs.admin.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.time.LocalDateTime;
 
 /**
  * 日志表(sys_log)表实体类
@@ -27,8 +29,8 @@ public class SysLogEntity extends BaseEntity {
     @Schema(description = "日志主键", name = "id", implementation = Long.class)
     private Long id;
 
-    @Schema(description = "日志类型0 登录日志  1系统日志", name = "type", implementation = Integer.class)
-    private Integer type;
+    @Schema(description = "日志类型0 登录日志  1系统日志", name = "type", implementation = String.class)
+    private String type;
 
     @Schema(description = "操作说明", name = "title", implementation = String.class)
     private String title;

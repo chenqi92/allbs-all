@@ -1,6 +1,7 @@
 package cn.allbs.admin.config.utils;
 
 import cn.allbs.admin.config.utils.convert.AllbsConversionService;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.lang.Nullable;
@@ -81,6 +82,29 @@ public class ConvertUtil {
         }
         GenericConversionService conversionService = AllbsConversionService.getInstance();
         return (T) conversionService.convert(source, targetType);
+    }
+
+    /**
+     * Convenience operation for converting a source object to the specified targetType.
+     * Simply delegates to {@link #convert(Object, Class)} and encapsulates any exceptions
+     * in a {@link ConversionFailedException}.
+     *
+     * @param obj        the source object
+     * @param targetType the target type
+     * @param <T>        泛型标记
+     * @return the converted value
+     * @throws ConversionFailedException if the conversion fails
+     */
+    @Nullable
+    public static <T> T convertObject(@Nullable Object obj, Class<T> targetType, T defaultValue) {
+        if (obj == null) {
+            return defaultValue;
+        }
+        try {
+            return convert(obj, targetType);
+        } catch (ConversionFailedException e) {
+            return defaultValue;
+        }
     }
 
 }

@@ -66,5 +66,10 @@ public interface StringPool {
     String UNKNOWN          = "unknown";
     String OK               = "ok";
 
+    /**
+     * 字符串常量：空 JSON {@code "{}"}
+     */
+    String EMPTY_JSON = "{}";
+
     // @formatter:on
 }

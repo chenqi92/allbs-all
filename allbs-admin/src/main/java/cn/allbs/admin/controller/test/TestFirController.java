@@ -1,5 +1,6 @@
 package cn.allbs.admin.controller.test;
 
+import cn.allbs.admin.config.annotation.SysLog;
 import cn.allbs.admin.config.core.R;
 import cn.allbs.admin.dto.test.TestFirDTO;
 import cn.allbs.admin.entity.test.TestFirEntity;
@@ -77,6 +78,7 @@ public class TestFirController {
      * @param testFirEntity
      * @return R
      */
+    @SysLog("测试数据新增")
     @Operation(description = "新增", summary = "新增", tags = {"数据新增"})
     @PostMapping
     public R<Boolean> save(@RequestBody TestFirEntity testFirEntity) {
