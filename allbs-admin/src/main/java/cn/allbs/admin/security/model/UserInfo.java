@@ -1,4 +1,4 @@
-package cn.allbs.admin.config.dto;
+package cn.allbs.admin.security.model;
 
 import cn.allbs.admin.entity.sys.SysUserEntity;
 import io.swagger.v3.oas.annotations.media.Schema;

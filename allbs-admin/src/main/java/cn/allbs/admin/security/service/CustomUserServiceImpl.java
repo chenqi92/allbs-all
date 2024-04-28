@@ -1,6 +1,6 @@
 package cn.allbs.admin.security.service;
 
-import cn.allbs.admin.config.dto.UserInfo;
+import cn.allbs.admin.security.model.UserInfo;
 import cn.allbs.admin.entity.sys.SysUserEntity;
 import cn.allbs.admin.security.constant.SecurityConstant;
 import cn.allbs.admin.security.model.SysUser;
