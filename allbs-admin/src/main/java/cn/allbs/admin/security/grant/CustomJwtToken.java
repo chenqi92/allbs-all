@@ -1,15 +1,13 @@
 package cn.allbs.admin.security.grant;
 
+import cn.allbs.admin.security.model.SysUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 import static cn.allbs.admin.security.constant.SecurityConstant.BEARER_TYPE;
 
@@ -36,25 +34,63 @@ public class CustomJwtToken implements Serializable {
     private String value;
 
     /**
-     * token
+     * accessToken
      */
     @Setter
-    private String token;
+    private String accessToken;
+
+    /**
+     * refreshToken
+     */
+    @Setter
+    private String refreshToken;
+
+    /**
+     * 用户名
+     */
+    @Setter
+    private String username;
+
+    /**
+     * 头像
+     */
+    @Setter
+    private String avatar;
+
+    /**
+     * 昵称
+     */
+    @Setter
+    private String nickname;
+
+    /**
+     * 角色列表
+     */
+    @Setter
+    private String[] roles;
+
+    /**
+     * 过期时间
+     */
+    @Setter
+    private LocalDateTime expires;
 
     private final String tokenType = BEARER_TYPE.toLowerCase();
 
-    /**
-     * 权限集合
-     */
-    private Set<String> permissions;
-
-    public CustomJwtToken(String value) {
+    public CustomJwtToken(String value, SysUser sysUser) {
         this.value = value;
+        this.avatar = sysUser.getAvatar();
+        this.nickname = sysUser.getNickname();
+        this.roles = sysUser.getRoles();
     }
 
     @SuppressWarnings("unused")
     private CustomJwtToken() {
         this((String) null);
+    }
+
+    public CustomJwtToken(String value) {
+        this.value = value;
     }
 
     @Override
@@ -70,9 +106,5 @@ public class CustomJwtToken implements Serializable {
     @Override
     public String toString() {
         return String.valueOf(getValue());
-    }
-
-    public void setPermissions(Collection<? extends GrantedAuthority> authorities) {
-        this.permissions = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
     }
 }

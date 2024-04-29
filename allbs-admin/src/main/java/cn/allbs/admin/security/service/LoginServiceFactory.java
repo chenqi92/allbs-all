@@ -33,7 +33,6 @@ public class LoginServiceFactory {
             case MOBILE -> mobileLoginService;
             case EMAIL -> emailLoginService;
             case MINI_PROGRAM -> miniProgramLoginService;
-            default -> throw new IllegalArgumentException("无效的登录类型: " + type);
         };
     }
 }

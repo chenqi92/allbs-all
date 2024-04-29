@@ -4,13 +4,10 @@ import cn.allbs.admin.config.core.R;
 import cn.allbs.admin.security.model.LoginRequest;
 import cn.allbs.admin.security.service.LoginService;
 import cn.allbs.admin.security.service.LoginServiceFactory;
-import cn.allbs.admin.security.utils.TokenUtil;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +49,27 @@ public class AuthenticationEndpoint {
         LoginService service = loginServiceFactory.getLoginService(request.getLoginType());
         return service.authenticate(request);
     }
+
+    /**
+     * 使用refresh-token获取access-token
+     *
+     * @return R<?>
+     */
+    @PostMapping("refresh-token")
+    public R<?> refreshToken() {
+        return R.ok();
+    }
+
+    /**
+     * 获取前端路由
+     *
+     * @return R<?>
+     */
+    @GetMapping("get-async-routes")
+    public R<?> getRoutes() {
+        return R.ok();
+    }
+
 
     /**
      * 验证码

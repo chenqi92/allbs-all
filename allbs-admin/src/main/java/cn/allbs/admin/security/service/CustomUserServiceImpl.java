@@ -1,9 +1,9 @@
 package cn.allbs.admin.security.service;
 
-import cn.allbs.admin.security.model.UserInfo;
 import cn.allbs.admin.entity.sys.SysUserEntity;
 import cn.allbs.admin.security.constant.SecurityConstant;
 import cn.allbs.admin.security.model.SysUser;
+import cn.allbs.admin.security.model.UserInfo;
 import cn.allbs.admin.service.sys.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 类 CustomUserServiceImpl 自定义用户登录校验
@@ -46,7 +49,7 @@ public class CustomUserServiceImpl implements UserDetailsService {
                 // 用户id
                 user.getUserId(),
                 // 用户手机号
-                user.getPhone(),
+                user.getNickname(),
                 // 用户头像
                 user.getAvatar(),
                 // 用户名
@@ -61,7 +64,7 @@ public class CustomUserServiceImpl implements UserDetailsService {
                 !SecurityConstant.STATUS_LOCK.equals(user.getLockFlg()),
                 // 权限列表
                 authorities,
-                Optional.ofNullable(userInfo.getDeptIds()).orElse(new HashSet<>())
+                userInfo.getRoleName()
         );
         // @formatter:on
     }

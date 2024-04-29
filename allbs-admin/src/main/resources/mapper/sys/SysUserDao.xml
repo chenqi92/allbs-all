@@ -4,6 +4,7 @@
     <resultMap type="cn.allbs.admin.entity.sys.SysUserEntity" id="SysUserMap">
         <result property="userId" column="user_id"/>
         <result property="username" column="username"/>
+        <result column="nickname" property="nickname"/>
         <result property="password" column="password"/>
         <result property="salt" column="salt"/>
         <result property="phone" column="phone"/>
@@ -24,6 +25,7 @@
     <sql id="baseColumn">
         `user_id`,
         `username`,
+        `nickname`,
         `password`,
         `salt`,
         `phone`,
@@ -43,23 +45,7 @@
 
     <select id="queryList" resultType="cn.allbs.admin.vo.sys.SysUserVO">
         select
-        `user_id`,
-        `username`,
-        `password`,
-        `salt`,
-        `phone`,
-        `avatar`,
-        `dept_id`,
-        `lock_flg`,
-        `wx_openid`,
-        `mini_openid`,
-        `qq_openid`,
-        `gitee_login`,
-        `del_flg`,
-        `create_time`,
-        `update_time`,
-        `create_user`,
-        `update_user`
+        <include refid="baseColumn"/>
         from sys_user
         <where>
             AND del_flg = 0
@@ -67,24 +53,27 @@
                 AND `user_id` = #{sysUserDTO.userId}
             </if>
             AND del_flg = 0
+            <if test="sysUserDTO.nickname != null and sysUserDTO.nickname != ''">
+                AND `nickname` like concat('%', #{sysUserDTO.nickname}, '%')
+            </if>
             <if test="sysUserDTO.username != null and sysUserDTO.username != ''">
-                AND `username` like concat('%', #{sysUserDTO.username} ,'%')
+                AND `username` like concat('%', #{sysUserDTO.username}, '%')
             </if>
             AND del_flg = 0
             <if test="sysUserDTO.password != null and sysUserDTO.password != ''">
-                AND `password` like concat('%', #{sysUserDTO.password} ,'%')
+                AND `password` like concat('%', #{sysUserDTO.password}, '%')
             </if>
             AND del_flg = 0
             <if test="sysUserDTO.salt != null and sysUserDTO.salt != ''">
-                AND `salt` like concat('%', #{sysUserDTO.salt} ,'%')
+                AND `salt` like concat('%', #{sysUserDTO.salt}, '%')
             </if>
             AND del_flg = 0
             <if test="sysUserDTO.phone != null and sysUserDTO.phone != ''">
-                AND `phone` like concat('%', #{sysUserDTO.phone} ,'%')
+                AND `phone` like concat('%', #{sysUserDTO.phone}, '%')
             </if>
             AND del_flg = 0
             <if test="sysUserDTO.avatar != null and sysUserDTO.avatar != ''">
-                AND `avatar` like concat('%', #{sysUserDTO.avatar} ,'%')
+                AND `avatar` like concat('%', #{sysUserDTO.avatar}, '%')
             </if>
             AND del_flg = 0
             <if test="sysUserDTO.deptId != null">
@@ -96,19 +85,19 @@
             </if>
             AND del_flg = 0
             <if test="sysUserDTO.wxOpenid != null and sysUserDTO.wxOpenid != ''">
-                AND `wx_openid` like concat('%', #{sysUserDTO.wxOpenid} ,'%')
+                AND `wx_openid` like concat('%', #{sysUserDTO.wxOpenid}, '%')
             </if>
             AND del_flg = 0
             <if test="sysUserDTO.miniOpenid != null and sysUserDTO.miniOpenid != ''">
-                AND `mini_openid` like concat('%', #{sysUserDTO.miniOpenid} ,'%')
+                AND `mini_openid` like concat('%', #{sysUserDTO.miniOpenid}, '%')
             </if>
             AND del_flg = 0
             <if test="sysUserDTO.qqOpenid != null and sysUserDTO.qqOpenid != ''">
-                AND `qq_openid` like concat('%', #{sysUserDTO.qqOpenid} ,'%')
+                AND `qq_openid` like concat('%', #{sysUserDTO.qqOpenid}, '%')
             </if>
             AND del_flg = 0
             <if test="sysUserDTO.giteeLogin != null and sysUserDTO.giteeLogin != ''">
-                AND `gitee_login` like concat('%', #{sysUserDTO.giteeLogin} ,'%')
+                AND `gitee_login` like concat('%', #{sysUserDTO.giteeLogin}, '%')
             </if>
             AND del_flg = 0
             AND del_flg = 0
@@ -121,11 +110,11 @@
             </if>
             AND del_flg = 0
             <if test="sysUserDTO.createUser != null and sysUserDTO.createUser != ''">
-                AND `create_user` like concat('%', #{sysUserDTO.createUser} ,'%')
+                AND `create_user` like concat('%', #{sysUserDTO.createUser}, '%')
             </if>
             AND del_flg = 0
             <if test="sysUserDTO.updateUser != null and sysUserDTO.updateUser != ''">
-                AND `update_user` like concat('%', #{sysUserDTO.updateUser} ,'%')
+                AND `update_user` like concat('%', #{sysUserDTO.updateUser}, '%')
             </if>
         </where>
     </select>

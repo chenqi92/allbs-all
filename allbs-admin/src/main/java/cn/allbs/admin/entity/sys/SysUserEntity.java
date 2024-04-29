@@ -28,6 +28,9 @@ public class SysUserEntity extends BaseEntity {
     @Schema(description = "用户名", name = "username", implementation = String.class)
     private String username;
 
+    @Schema(description = "昵称", name = "nickname", implementation = String.class)
+    private String nickname;
+
     @Schema(description = "密码", name = "password", implementation = String.class)
     private String password;
 

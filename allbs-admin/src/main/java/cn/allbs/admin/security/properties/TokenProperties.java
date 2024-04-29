@@ -16,14 +16,14 @@ import org.springframework.stereotype.Component;
 public class TokenProperties {
 
     /**
-     * 过期时间
+     * access-token过期时间（秒）
      */
     private Long expiredTime = 7200L;
 
     /**
-     * 刷新时间
+     * refresh-token过期时间（秒）
      */
-    private Long refreshTime = 259200L;
+    private Long refreshExpiredTime = 604800L;
 
     /**
      * 签名

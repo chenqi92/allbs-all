@@ -1,5 +1,6 @@
 package cn.allbs.admin.security.grant;
 
+import cn.allbs.admin.security.exception.UserNameNotFoundException;
 import cn.allbs.admin.security.model.SysUser;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -68,8 +69,7 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
         String presentedPassword = authentication.getCredentials().toString();
         if (!this.getPasswordEncoder().matches(presentedPassword, userDetails.getPassword())) {
             this.logger.debug("Failed to authenticate since password does not match stored value");
-            throw new BadCredentialsException(this.messages
-                    .getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+            throw new UserNameNotFoundException("用户名或密码错误");
         }
     }
 

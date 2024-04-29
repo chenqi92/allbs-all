@@ -13,5 +13,10 @@ public interface CacheConstant {
     /**
      * token信息
      */
-    String CACHE_TOKEN = PRODUCT + "token:";
+    String CACHE_TOKEN = PRODUCT + "access:";
+
+    /**
+     * refresh-token信息
+     */
+    String REFRESH_TOKEN = PRODUCT + "refresh:";
 }

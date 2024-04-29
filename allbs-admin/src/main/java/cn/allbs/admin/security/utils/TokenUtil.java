@@ -241,6 +241,15 @@ public class TokenUtil {
     }
 
     /**
+     * 获取刷新时间
+     *
+     * @return 刷新时间
+     */
+    public Long refreshTokenExpireTime() {
+        return tokenProperties.getRefreshExpiredTime();
+    }
+
+    /**
      * 是否允许同端账户同时在线 true 允许 false 不允许
      *
      * @return boolean

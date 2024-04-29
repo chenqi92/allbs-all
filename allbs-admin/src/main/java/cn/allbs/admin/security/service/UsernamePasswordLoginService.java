@@ -1,8 +1,10 @@
 package cn.allbs.admin.security.service;
 
+import cn.allbs.admin.config.constant.StringPool;
 import cn.allbs.admin.config.core.R;
 import cn.allbs.admin.security.grant.CustomJwtToken;
 import cn.allbs.admin.security.model.LoginRequest;
+import cn.allbs.admin.security.model.SysUser;
 import cn.allbs.admin.security.model.UserNameLoginRequest;
 import cn.allbs.admin.security.utils.TokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +14,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static cn.allbs.admin.config.constant.CacheConstant.CACHE_TOKEN;
+import static cn.allbs.admin.config.constant.CacheConstant.REFRESH_TOKEN;
 
 /**
  * 类 UsernamePasswordLoginService
@@ -41,26 +45,34 @@ public class UsernamePasswordLoginService implements LoginService {
     @Override
     public R<?> authenticate(LoginRequest request) {
         UserNameLoginRequest userNameRequest = (UserNameLoginRequest) request;
-        // 首先解码
+        // 账号密码校验
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userNameRequest.getUsername(), userNameRequest.getPassword())
         );
-        String tokenKey = CACHE_TOKEN + userNameRequest.getUsername();
+        String accessTokenKey = CACHE_TOKEN + userNameRequest.getUsername();
+        String refreshTokenKey = REFRESH_TOKEN + userNameRequest.getUsername();
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        SysUser sysUser = (SysUser) authentication.getPrincipal();
         // 生成并返回token给客户端，后续访问携带此token
-        CustomJwtToken token = new CustomJwtToken(UUID.randomUUID().toString());
-        token.setPermissions(authentication.getAuthorities());
-        // 查看是否会踢同用户下线 如果允许直接返回已存在的token，如果不允许则生成新token
-        Object redisToken = redisTemplate.opsForValue().get(tokenKey);
-        if (tokenUtil.onlineMulti() && !ObjectUtils.isEmpty(redisToken)) {
-            token.setToken(redisToken.toString());
-            return R.ok(token);
+        CustomJwtToken token = new CustomJwtToken(UUID.randomUUID().toString(), sysUser);
+        token.setUsername(userNameRequest.getUsername());
+        // 查看是否会踢同用户下线 如果允许同端账户同时在线，则生成新token返回。如果不允许则返回新生成的token并删除原token
+        if (!tokenUtil.onlineMulti()) {
+            Set<Object> keys = redisTemplate.keys(accessTokenKey + StringPool.COLON + "*");
+            assert keys != null;
+            if (!keys.isEmpty()) {
+                redisTemplate.delete(keys);
+            }
         }
-        redisTemplate.delete(tokenKey);
-        String tokenStr = tokenUtil.generateToken(authentication);
-        token.setToken(tokenStr);
+        // 生成新的accessToken和refreshToken
+        String accessToken = UUID.randomUUID().toString();
+        String refreshToken = UUID.randomUUID().toString();
+        token.setAccessToken(accessToken);
+        token.setExpires(LocalDateTime.now().plusSeconds(tokenUtil.expireTime()));
         // redis中储存token
-        redisTemplate.opsForValue().set(tokenKey, tokenStr, tokenUtil.expireTime(), TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(accessTokenKey + StringPool.COLON + accessToken, accessToken, tokenUtil.expireTime(), TimeUnit.SECONDS);
+        token.setRefreshToken(refreshToken);
+        redisTemplate.opsForValue().set(refreshTokenKey + StringPool.COLON + refreshToken, refreshToken, tokenUtil.refreshTokenExpireTime(), TimeUnit.SECONDS);
         // 返回Token 相关信息
         return R.ok(token);
     }
