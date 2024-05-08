@@ -114,7 +114,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         // 查询并设置角色列表
         List<SysRoleEntity> roleEntities = sysRoleService.list(Wrappers.<SysRoleEntity>query().lambda().in(SysRoleEntity::getRoleId, roleIds));
         if (!CollectionUtils.isEmpty(roleEntities)) {
-            userInfo.setRoleName(roleEntities.stream().map(SysRoleEntity::getRoleName).toArray(String[]::new));
+            userInfo.setRoleName(roleEntities.stream().map(SysRoleEntity::getRoleCode).toArray(String[]::new));
         }
         return userInfo;
     }

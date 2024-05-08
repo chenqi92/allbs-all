@@ -1,6 +1,7 @@
 package cn.allbs.admin.security.endpoint;
 
 import cn.allbs.admin.config.core.R;
+import cn.allbs.admin.security.annotation.IgnoreUri;
 import cn.allbs.admin.security.model.LoginRequest;
 import cn.allbs.admin.security.service.LoginService;
 import cn.allbs.admin.security.service.LoginServiceFactory;
@@ -33,6 +34,7 @@ public class AuthenticationEndpoint {
      *
      * @return R<?>
      */
+    @IgnoreUri
     @PostMapping("registerUser")
     public R<?> registerUser() {
         return R.ok();
@@ -44,6 +46,7 @@ public class AuthenticationEndpoint {
      * @param request request
      * @return R<?>
      */
+    @IgnoreUri
     @PostMapping("/login")
     public R<?> login(@RequestBody LoginRequest request) {
         LoginService service = loginServiceFactory.getLoginService(request.getLoginType());
@@ -76,6 +79,7 @@ public class AuthenticationEndpoint {
      *
      * @return R<?>
      */
+    @IgnoreUri
     @GetMapping("captcha")
     public void captcha() {
     }

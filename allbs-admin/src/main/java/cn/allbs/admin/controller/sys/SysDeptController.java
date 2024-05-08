@@ -85,7 +85,7 @@ public class SysDeptController {
     @Operation(description = "新增部门管理", summary = "新增部门管理", tags = {"数据新增"})
     @SysLog("新增部门管理")
     @PostMapping
-    @PreAuthorize("@pms.hasPermission('sysDept_save')")
+    @PreAuthorize("@ps.hasPms('sysDept_save')")
     public R<Boolean> save(@RequestBody SysDeptEntity sysDeptEntity) {
         return R.ok(this.sysDeptService.save(sysDeptEntity));
     }

@@ -91,8 +91,6 @@ public class CustomSecurityConfig {
                 .authorizeHttpRequests(authorization -> authorization
                         // 跨域允许所有的OPTIONS请求
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // 权限操作相关接口
-                        .requestMatchers("/auth/**").permitAll()
                         // 放行白名单
                         .requestMatchers(permitUrlProperties.getIgnoreUrls()
                                 .stream()
